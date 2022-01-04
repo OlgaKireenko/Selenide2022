@@ -25,15 +25,16 @@ public class CardDeliveryTest {
     @Test
     public void shouldOrderDelivery() {
         LocalDate date = LocalDate.now();
+        LocalDate date1 = date.plusDays(4);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        String text1 = date1.format(formatter);
 
-        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
-       // String date1 = date.format(formatter);
 
         open("http://localhost:9999");
         $(".input__control").setValue("Москва");
 
-       // $("[data-test-id='date']").doubleClick().sendKeys(Keys.BACK_SPACE);
-      //$("[type='date']").setValue("10.01.2022");
+       $("[type='tel']").doubleClick().sendKeys(Keys.BACK_SPACE);
+      $("[type='tel']").setValue(text1);
 
 
         $("[name='name']").setValue("Ольга Киреенко");
@@ -42,8 +43,9 @@ public class CardDeliveryTest {
         $(byText("Забронировать")).click();
 
         String text = $(".notification__content").shouldBe(visible,Duration.ofSeconds(15)).getText();
+        String text2 = "Встреча успешно забронирована на " +text1;
 
-        assertEquals("Встреча успешно забронирована на 07.01.2022",text);
+        assertEquals(text2,text);
 
 
 
